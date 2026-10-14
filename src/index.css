@@ -1,0 +1,135 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Ethiopic:wght@400;500;600;700&display=swap');
+@import 'tailwindcss';
+
+@theme {
+  --font-sans: 'Inter', 'Noto Sans Ethiopic', system-ui, 'Segoe UI', sans-serif;
+
+  --color-brand-50: #eefdf6;
+  --color-brand-100: #d6f8e8;
+  --color-brand-200: #b0f0d4;
+  --color-brand-300: #7ce3b9;
+  --color-brand-400: #43cd9a;
+  --color-brand-500: #1cb381;
+  --color-brand-600: #0f9068;
+  --color-brand-700: #0d7355;
+  --color-brand-800: #0e5b45;
+  --color-brand-900: #0c4b3a;
+
+  --color-gold-400: #f2c14e;
+  --color-gold-500: #e0a92e;
+  --color-gold-600: #c08a1e;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  background-color: var(--color-slate-100);
+  color: var(--color-slate-800);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+button,
+a,
+label {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Mobile: prevent iOS from zooming when focusing inputs */
+@media (max-width: 639px) {
+  input,
+  select,
+  textarea {
+    font-size: 16px;
+  }
+}
+
+/* Responsive tables: collapse into stacked cards on phones */
+@media (max-width: 639px) {
+  .rtable,
+  .rtable tbody {
+    display: block;
+    width: 100%;
+  }
+
+  .rtable thead {
+    display: none;
+  }
+
+  .rtable tr {
+    display: block;
+    margin-bottom: 0.75rem;
+    overflow: hidden;
+    border: 1px solid var(--color-slate-200);
+    border-radius: 0.75rem;
+    background: #fff;
+  }
+
+  .rtable td {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 0.5rem 0.75rem;
+    text-align: right;
+    border-bottom: 1px solid var(--color-slate-100);
+  }
+
+  .rtable td:last-child,
+  .rtable tr td:only-child {
+    border-bottom: 0;
+  }
+
+  .rtable td::before {
+    content: attr(data-label);
+    flex: 0 0 auto;
+    max-width: 45%;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-align: left;
+    color: var(--color-slate-500);
+  }
+
+  .rtable td:not([data-label])::before,
+  .rtable td[data-label='']::before {
+    content: none;
+  }
+
+  .rtable td:not([data-label]) {
+    justify-content: flex-end;
+  }
+
+  .rtable td > * {
+    min-width: 0;
+  }
+}
+
+/* Scrollbar polish */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-slate-300);
+  border-radius: 9999px;
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+}
