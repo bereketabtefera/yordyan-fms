@@ -20,6 +20,9 @@ export async function buildBackup(): Promise<BackupFile> {
     transfers,
     taxes,
     settings,
+    designs,
+    colorPalettes,
+    patternSets,
   ] = await Promise.all([
     db.profile.toArray(),
     db.orders.toArray(),
@@ -32,6 +35,9 @@ export async function buildBackup(): Promise<BackupFile> {
     db.transfers.toArray(),
     db.taxes.toArray(),
     db.settings.toArray(),
+    db.designs.toArray(),
+    db.colorPalettes.toArray(),
+    db.patternSets.toArray(),
   ])
   return {
     app: 'yordyan-fms',
@@ -49,6 +55,9 @@ export async function buildBackup(): Promise<BackupFile> {
       transfers,
       taxes,
       settings,
+      designs,
+      colorPalettes,
+      patternSets,
     },
   }
 }
@@ -114,6 +123,9 @@ export async function wipeAll(keepSettings = true) {
     db.inventory.clear(),
     db.transfers.clear(),
     db.taxes.clear(),
+    db.designs.clear(),
+    db.colorPalettes.clear(),
+    db.patternSets.clear(),
   ])
   if (!keepSettings) {
     await db.settings.clear()

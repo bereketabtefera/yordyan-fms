@@ -4,11 +4,14 @@ import { useLiveQuery } from 'dexie-react-hooks'
 import { db, DEFAULT_SETTINGS, ensureSettings } from './db'
 import type {
   BusinessProfile,
+  ColorPalette,
+  Design,
   Expense,
   InventoryItem,
   Order,
   OwnerTransaction,
   Payment,
+  PatternSet,
   ProductionCost,
   Settings,
   Supplier,
@@ -35,6 +38,9 @@ interface Ctx {
   ownerTransactions: OwnerTransaction[]
   transfers: Transfer[]
   taxes: TaxRecord[]
+  designs: Design[]
+  colorPalettes: ColorPalette[]
+  patternSets: PatternSet[]
 }
 
 const DataContext = createContext<Ctx | null>(null)
@@ -63,6 +69,9 @@ export function DataProvider({ children }: { children: ReactNode }) {
   const allOwner = useLiveQuery(() => db.ownerTransactions.toArray(), [], undefined)
   const allTransfers = useLiveQuery(() => db.transfers.toArray(), [], undefined)
   const allTaxes = useLiveQuery(() => db.taxes.toArray(), [], undefined)
+  const allDesigns = useLiveQuery(() => db.designs.toArray(), [], undefined)
+  const allPalettes = useLiveQuery(() => db.colorPalettes.toArray(), [], undefined)
+  const allPatterns = useLiveQuery(() => db.patternSets.toArray(), [], undefined)
 
   const setIncludeSample = (b: boolean) => {
     localStorage.setItem(SAMPLE_KEY, String(b))
@@ -100,6 +109,9 @@ export function DataProvider({ children }: { children: ReactNode }) {
       ownerTransactions,
       transfers,
       taxes: visible(allTaxes ?? [], includeSample),
+      designs: visible(allDesigns ?? [], includeSample),
+      colorPalettes: visible(allPalettes ?? [], includeSample),
+      patternSets: visible(allPatterns ?? [], includeSample),
       data: { orders, payments, productionCosts, expenses, ownerTransactions, transfers, settings: effSettings },
     }
   }, [
@@ -116,6 +128,9 @@ export function DataProvider({ children }: { children: ReactNode }) {
     allOwner,
     allTransfers,
     allTaxes,
+    allDesigns,
+    allPalettes,
+    allPatterns,
   ])
 
   return <DataContext.Provider value={value}>{children}</DataContext.Provider>

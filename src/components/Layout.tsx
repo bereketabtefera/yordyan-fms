@@ -1,15 +1,17 @@
-import { useState } from 'react'
-import { NavLink, Outlet } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { useI18n } from '../i18n/LanguageContext'
 import { useData } from '../db/DataContext'
-import { NAV_GROUPS } from './nav'
+import { NAV_BY_WORKSPACE, type NavGroup, type Workspace } from './nav'
 import { cn } from './cn'
 
-function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
+const WORKSPACE_KEY = 'yordyan.workspace'
+
+function SidebarContent({ groups, onNavigate }: { groups: NavGroup[]; onNavigate?: () => void }) {
   const { t } = useI18n()
   return (
     <nav className="flex h-full flex-col gap-4 overflow-y-auto p-3">
-      {NAV_GROUPS.map((group) => (
+      {groups.map((group) => (
         <div key={group.key}>
           <p className="px-2 pb-1 text-[10px] font-semibold uppercase tracking-wider text-slate-400">
             {t(group.key)}
@@ -45,6 +47,29 @@ export function Layout() {
   const { t, lang, setLang } = useI18n()
   const { includeSample, setIncludeSample } = useData()
   const [drawer, setDrawer] = useState(false)
+  const location = useLocation()
+  const navigate = useNavigate()
+
+  const [workspace, setWorkspace] = useState<Workspace>(() => {
+    const saved = localStorage.getItem(WORKSPACE_KEY)
+    return saved === 'design' || saved === 'fms' ? (saved as Workspace) : 'fms'
+  })
+
+  useEffect(() => {
+    setWorkspace(location.pathname.startsWith('/design') ? 'design' : 'fms')
+  }, [location.pathname])
+
+  useEffect(() => {
+    localStorage.setItem(WORKSPACE_KEY, workspace)
+  }, [workspace])
+
+  function switchWorkspace(next: Workspace) {
+    if (next === workspace) return
+    setWorkspace(next)
+    navigate(next === 'design' ? '/design' : '/')
+  }
+
+  const groups = NAV_BY_WORKSPACE[workspace]
 
   return (
     <div className="flex min-h-screen bg-slate-100">
@@ -58,7 +83,7 @@ export function Layout() {
             <p className="text-[11px] text-slate-500">{t('subtitle')}</p>
           </div>
         </div>
-        <SidebarContent />
+        <SidebarContent groups={groups} />
       </aside>
 
       {drawer && (
@@ -71,7 +96,7 @@ export function Layout() {
                 ✕
               </button>
             </div>
-            <SidebarContent onNavigate={() => setDrawer(false)} />
+            <SidebarContent groups={groups} onNavigate={() => setDrawer(false)} />
           </div>
         </div>
       )}
@@ -86,6 +111,26 @@ export function Layout() {
             >
               ☰
             </button>
+            <div className="flex overflow-hidden rounded-lg border border-slate-200 text-sm font-medium">
+              <button
+                onClick={() => switchWorkspace('fms')}
+                className={cn(
+                  'px-3 py-1.5 transition-colors',
+                  workspace === 'fms' ? 'bg-brand-600 text-white' : 'bg-white text-slate-600 hover:bg-slate-50',
+                )}
+              >
+                {t('tab_fms')}
+              </button>
+              <button
+                onClick={() => switchWorkspace('design')}
+                className={cn(
+                  'px-3 py-1.5 transition-colors',
+                  workspace === 'design' ? 'bg-gold-500 text-white' : 'bg-white text-slate-600 hover:bg-slate-50',
+                )}
+              >
+                {t('tab_design')}
+              </button>
+            </div>
             <span className="hidden text-sm font-medium text-slate-500 sm:block">{t('appName')}</span>
           </div>
 

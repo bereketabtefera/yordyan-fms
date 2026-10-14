@@ -1,11 +1,14 @@
 import Dexie, { type Table } from 'dexie'
 import type {
   BusinessProfile,
+  ColorPalette,
+  Design,
   Expense,
   InventoryItem,
   Order,
   OwnerTransaction,
   Payment,
+  PatternSet,
   ProductionCost,
   Settings,
   Supplier,
@@ -55,6 +58,9 @@ class FMSDatabase extends Dexie {
   transfers!: Table<Transfer, number>
   taxes!: Table<TaxRecord, number>
   settings!: Table<Settings, number>
+  designs!: Table<Design, number>
+  colorPalettes!: Table<ColorPalette, number>
+  patternSets!: Table<PatternSet, number>
 
   constructor() {
     super('yordyan-fms')
@@ -70,6 +76,11 @@ class FMSDatabase extends Dexie {
       transfers: '++id, date, isSample',
       taxes: '++id, taxType, period, isSample',
       settings: 'id',
+    })
+    this.version(2).stores({
+      designs: '++id, code, garmentType, orderId, isSample',
+      colorPalettes: '++id, name, isSample',
+      patternSets: '++id, designId, garmentType, isSample',
     })
   }
 }

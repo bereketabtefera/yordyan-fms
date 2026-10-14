@@ -10,7 +10,9 @@ export interface NavGroup {
   items: NavItem[]
 }
 
-export const NAV_GROUPS: NavGroup[] = [
+export type Workspace = 'fms' | 'design'
+
+export const FMS_NAV_GROUPS: NavGroup[] = [
   {
     key: 'navGroup_core',
     items: [
@@ -51,3 +53,23 @@ export const NAV_GROUPS: NavGroup[] = [
     ],
   },
 ]
+
+export const DESIGN_NAV_GROUPS: NavGroup[] = [
+  {
+    key: 'navGroup_design',
+    items: [
+      { to: '/design', key: 'nav_design_studio' },
+      { to: '/design/patterns', key: 'nav_design_pattern' },
+      { to: '/design/colors', key: 'nav_design_colors' },
+      { to: '/design/library', key: 'nav_design_library' },
+    ],
+  },
+]
+
+export const NAV_BY_WORKSPACE: Record<Workspace, NavGroup[]> = {
+  fms: FMS_NAV_GROUPS,
+  design: DESIGN_NAV_GROUPS,
+}
+
+// Back-compat alias
+export const NAV_GROUPS = FMS_NAV_GROUPS

@@ -14,6 +14,10 @@ import { Suppliers } from './pages/Suppliers'
 import { Inventory } from './pages/Inventory'
 import { Pricing } from './pages/Pricing'
 import { TaxTracker } from './pages/TaxTracker'
+import { DesignStudio } from './pages/DesignStudio'
+import { DesignLibrary } from './pages/DesignLibrary'
+import { ColorLab } from './pages/ColorLab'
+import { PatternMaker } from './pages/PatternMaker'
 import { Profile } from './pages/Profile'
 import { Settings } from './pages/Settings'
 
@@ -36,6 +40,11 @@ export default function App() {
               <Route path="/inventory" element={<Inventory />} />
               <Route path="/pricing" element={<Pricing />} />
               <Route path="/tax" element={<TaxTracker />} />
+              <Route path="/design" element={<DesignStudio />} />
+              <Route path="/design/patterns" element={<PatternMaker />} />
+              <Route path="/design/pattern" element={<Navigate to="/design/patterns" replace />} />
+              <Route path="/design/colors" element={<ColorLab />} />
+              <Route path="/design/library" element={<DesignLibrary />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/settings" element={<Settings />} />
               <Route path="*" element={<Navigate to="/" replace />} />

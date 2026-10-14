@@ -347,59 +347,77 @@ export async function seedSample() {
     isSample: S,
   })
 
-  await db.inventory.bulkAdd([
+  await db.colorPalettes.bulkAdd([
     {
-      name: 'Fetil fabric (sample)',
-      unit: 'metre',
-      qtyPurchased: 20,
-      unitCost: 250,
-      qtyUsed: 6,
-      qtySold: 0,
-      qtyWasted: 1,
-      supplierId,
-      date: day(-1, 2),
-      cost: 5000,
-      note: 'Illustrative',
+      name: 'Classic red tilet (sample)',
+      primary: '#f7f5ef',
+      secondary: '#b91c1c',
+      accents: ['#d4a017', '#111827'],
+      note: 'Illustrative palette',
       isSample: S,
     },
     {
-      name: 'Cotton fabric (sample)',
-      unit: 'metre',
-      qtyPurchased: 15,
-      unitCost: 180,
-      qtyUsed: 4,
-      qtySold: 0,
-      qtyWasted: 0,
-      supplierId,
-      date: day(0, 4),
-      cost: 2700,
-      note: 'Illustrative',
+      name: 'Yellow & black tibeb (sample)',
+      primary: '#f7f5ef',
+      secondary: '#eab308',
+      accents: ['#111827', '#b91c1c'],
+      note: 'Illustrative palette',
       isSample: S,
     },
   ])
 
-  await db.taxes.bulkAdd([
+  await db.designs.bulkAdd([
     {
-      taxType: 'Business income tax (sample estimate)',
-      period: base,
-      estimated: 1500,
-      paid: 0,
-      paidDate: '',
-      deadline: '',
-      note: 'Illustrative only — confirm with the revenue authority.',
+      code: 'DSN-SAMPLE-9001',
+      name: 'Zuria Tibeb Kemis (sample)',
+      nameAm: 'ዙሪያ ጥበብ ቀሚስ (ናሙና)',
+      garmentType: 'kemis',
+      silhouette: 'aline',
+      neckline: 'v',
+      sleeve: 'half',
+      length: 'ankle',
+      fabric: 'Shema (handwoven cotton)',
+      tibebStyle: 'tibeb',
+      tiletPlacement: 'zuria',
+      baseColor: '#f7f5ef',
+      tiletColors: ['#b91c1c', '#d4a017', '#15803d'],
+      specs: 'Illustrative design example.',
+      orderId: null,
       isSample: S,
+      createdAt: new Date().toISOString(),
     },
     {
-      taxType: 'Withholding tax (sample)',
-      period: base,
-      estimated: 300,
-      paid: 300,
-      paidDate: day(0, 10),
-      deadline: '',
-      note: 'Illustrative only.',
+      code: 'DSN-SAMPLE-9002',
+      name: "Men's Kaba vest (sample)",
+      nameAm: 'የወንድ ካባ ቬስት (ናሙና)',
+      garmentType: 'vest',
+      silhouette: 'straight',
+      neckline: 'v',
+      sleeve: 'none',
+      length: 'short',
+      fabric: 'Cotton',
+      tibebStyle: 'tilet',
+      tiletPlacement: 'neckline',
+      baseColor: '#f1f0ea',
+      tiletColors: ['#111827', '#d4a017'],
+      specs: 'Illustrative design example.',
+      orderId: null,
       isSample: S,
+      createdAt: new Date().toISOString(),
     },
   ])
+
+  await db.patternSets.add({
+    name: 'Kemis — size M (sample)',
+    designId: null,
+    garmentType: 'kemis',
+    sizeMode: 'standard',
+    sizeLabel: 'M',
+    measurements: { bust: 88, waist: 70, hip: 94, shoulder: 12, backLength: 40, frontLength: 42, chestWidth: 16, backWidth: 17, neck: 36, armholeDepth: 21, sleeveLength: 58, bicep: 28, skirtLength: 100 },
+    seamAllowance: 1.5,
+    createdAt: new Date().toISOString(),
+    isSample: S,
+  })
 }
 
 export async function clearSample() {
@@ -410,6 +428,8 @@ export async function clearSample() {
   await db.suppliers.filter((r) => !!r.isSample).delete()
   await db.ownerTransactions.filter((r) => !!r.isSample).delete()
   await db.inventory.filter((r) => !!r.isSample).delete()
-  await db.transfers.filter((r) => !!r.isSample).delete()
   await db.taxes.filter((r) => !!r.isSample).delete()
+  await db.designs.filter((r) => !!r.isSample).delete()
+  await db.colorPalettes.filter((r) => !!r.isSample).delete()
+  await db.patternSets.filter((r) => !!r.isSample).delete()
 }
